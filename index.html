@@ -1,149 +1,340 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zama Hub by Ankush</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #0d1117;
-      color: #e6edf3;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      text-align: center;
-      padding: 2rem;
-      background: #161b22;
-      border-bottom: 1px solid #30363d;
-    }
-    h1 { color: #58a6ff; font-size: 2rem; margin-bottom: 0.5rem; }
-    p { margin: 0.5rem 0 1rem; color: #adb6c3; }
-    .section {
-      padding: 2rem;
-      border-bottom: 1px solid #30363d;
-    }
-    .section h2 {
-      color: #58a6ff;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 1.2rem;
-      transition: all 0.3s ease;
-    }
-    .card:hover {
-      border-color: #58a6ff;
-      transform: translateY(-5px);
-    }
-    a {
-      color: #58a6ff;
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #161b22;
-      border-top: 1px solid #30363d;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zama Hub — Quiz & Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7fafc; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --glass:rgba(37,99,235,0.06);
+  --shadow: 0 8px 24px rgba(16,24,40,0.06);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#0f172a;background:linear-gradient(180deg,#f8fafc,#eef2ff);}
+.container{max-width:1100px;margin:28px auto;padding:20px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);box-shadow:var(--shadow);border:1px solid rgba(2,6,23,0.04)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-weight:700;color:#072f6b}
+h1{font-size:18px;margin:0;color:var(--accent)}
+.header .muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);padding:16px;border-radius:12px;border:1px solid rgba(2,6,23,0.04);box-shadow:0 6px 18px rgba(16,24,40,0.04);transition:transform .22s}
+.card:hover{transform:translateY(-6px)}
+.section-title{color:var(--accent);margin:0 0 10px 0;font-weight:600}
+.small{font-size:13px;color:var(--muted)}
+.links a{display:block;color:#0b4db7;text-decoration:none;margin:6px 0}
+.watermark{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.06;font-weight:800;font-size:24vw;color:#2563eb;transform:rotate(-12deg);z-index:0}
+.quiz-actions{display:flex;gap:10px;flex-wrap:wrap}
+.quiz-btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.14)}
+.btn-ghost{background:transparent;border:1px solid rgba(2,6,23,0.06);padding:9px 12px;border-radius:10px;cursor:pointer;color:var(--muted)}
+/* quiz panel */
+.quiz-panel{position:fixed;right:18px;bottom:18px;width:420px;max-width:94vw;border-radius:12px;background:#fff;border:1px solid rgba(2,6,23,0.04);box-shadow:0 20px 60px rgba(16,24,40,0.12);z-index:40;overflow:hidden}
+.quiz-header{padding:12px 14px;border-bottom:1px solid rgba(2,6,23,0.03);display:flex;justify-content:space-between;align-items:center}
+.quiz-body{padding:14px;max-height:520px;overflow:auto}
+.q-text{font-weight:700;margin:0 0 8px 0;color:#0f172a}
+.opt{padding:10px;border-radius:10px;border:1px solid rgba(2,6,23,0.04);margin-bottom:8px;cursor:pointer;background:#fbfdff}
+.opt:hover{border-color:var(--accent);transform:translateY(-3px)}
+.progress{height:8px;background:#eef2ff;border-radius:99px;overflow:hidden;margin-top:10px}
+.progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7cc1ff);width:0%}
+.quiz-footer{padding:12px 14px;border-top:1px solid rgba(2,6,23,0.03);display:flex;justify-content:space-between;align-items:center}
+.score-large{font-size:20px;color:var(--accent);font-weight:700}
+/* leaderboard panel */
+.lb-panel{position:fixed;left:18px;bottom:18px;width:360px;max-width:92vw;border-radius:12px;background:#fff;border:1px solid rgba(2,6,23,0.04);box-shadow:0 20px 60px rgba(16,24,40,0.12);z-index:40;overflow:hidden}
+.lb-body{padding:12px;max-height:520px;overflow:auto}
+.lb-item{display:flex;justify-content:space-between;padding:8px;border-radius:10px;border:1px solid rgba(2,6,23,0.03);margin-bottom:8px;background:#fbfdff}
+.footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding:18px}
+.input-inline{padding:8px;border-radius:8px;border:1px solid rgba(2,6,23,0.06);width:150px}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Zama Hub</h1>
-    <p>All-in-one place to learn, build, and explore the world of FHE with Zama</p>
-  </header>
+<div class="watermark">ZAMA</div>
 
-  <section class="section">
-    <h2>🔐 Learn FHE</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>What is FHE?</h3>
-        <p>Fully Homomorphic Encryption lets you perform computations on encrypted data without decrypting it. This enables private AI and secure computing.</p>
-      </div>
-      <div class="card">
-        <h3>Why it matters</h3>
-        <p>FHE protects user data at all stages — storage, computation, and transmission. It's the next big thing in privacy tech.</p>
-      </div>
-      <div class="card">
-        <h3>Learn More</h3>
-        <ul>
-          <li><a href="https://zama.ai/blog" target="_blank">Zama Blog</a></li>
-          <li><a href="https://docs.zama.ai" target="_blank">Zama Docs</a></li>
-          <li><a href="https://zama.ai" target="_blank">Official Website</a></li>
-        </ul>
+<div class="container">
+  <div class="header" role="banner">
+    <div class="brand">
+      <div class="logo">ZH</div>
+      <div>
+        <h1>Zama Hub</h1>
+        <div class="muted small">All-in-one learning & demo center — built by Ankush</div>
       </div>
     </div>
-  </section>
-
-  <section class="section">
-    <h2>⚙️ Zama Tools</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Concrete</h3>
-        <p>Zama’s FHE compiler and libraries that bring homomorphic encryption to real-world use cases.</p>
-      </div>
-      <div class="card">
-        <h3>FHEmulator</h3>
-        <p>A developer-friendly tool to simulate FHE computations before real deployment.</p>
-      </div>
-      <div class="card">
-        <h3>Learn Resources</h3>
-        <p><a href="https://github.com/zama-ai" target="_blank">Zama GitHub</a></p>
+    <div>
+      <div class="small">Quick actions</div>
+      <div class="quiz-actions" style="margin-top:8px">
+        <button class="quiz-btn" id="startBtn">Start Quiz</button>
+        <button class="btn-ghost" id="openLB">Leaderboard</button>
+        <a href="#projects" class="btn-ghost">My Projects</a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>💻 My Zama Projects</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Lockbox FHE Demo</h3>
-        <p>A small concept showing how computers can calculate on locked data.</p>
-        <a href="https://github.com/Ankush376/Lockbox-fhe-demo" target="_blank">View on GitHub</a>
+  <main style="position:relative;z-index:2">
+    <section id="learn" style="margin-top:18px">
+      <div class="section-title">Learn FHE</div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <h3 class="small">What is FHE?</h3>
+          <p class="small muted">FHE allows computation on encrypted data so sensitive inputs never need to be revealed to the processor.</p>
+        </div>
+        <div class="card">
+          <h3 class="small">Why it matters</h3>
+          <p class="small muted">Privacy-first AI and encrypted analytics become possible with FHE — good for healthcare and finance.</p>
+        </div>
+        <div class="card">
+          <h3 class="small">Quick links</h3>
+          <div class="links">
+            <a href="https://zama.ai" target="_blank">Zama home</a>
+            <a href="https://github.com/zama-ai" target="_blank">Zama GitHub</a>
+            <a href="https://zama.ai/blog" target="_blank">Zama Blog</a>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Zama Q&A Hub</h3>
-        <p>Question–Answer style webpage for beginners to learn FHE and Zama concepts.</p>
-        <a href="https://github.com/Ankush376/Zama-QA-Web" target="_blank">View on GitHub</a>
+    </section>
+
+    <section id="tools" style="margin-top:26px">
+      <div class="section-title">Zama Tools</div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <h3 class="small">Concrete</h3>
+          <p class="small muted">Compiler & libraries to build FHE apps from models and code.</p>
+        </div>
+        <div class="card">
+          <h3 class="small">TFHE / TFHE-rs</h3>
+          <p class="small muted">High-performance schemes and Rust bindings used for efficient encrypted ops.</p>
+        </div>
+        <div class="card">
+          <h3 class="small">Examples</h3>
+          <p class="small muted">Start with Colab demos on Zama's GitHub to quickly try FHE ideas.</p>
+        </div>
       </div>
-      <div class="card">
-        <h3>Zama Learning Dashboard</h3>
-        <p>Clean, dark UI website to explore FHE fundamentals and Zama tools in one page.</p>
-        <a href="https://ankush376.github.io/Zama-Learning-Dashboard/" target="_blank">Live Demo</a>
+    </section>
+
+    <section id="projects" style="margin-top:26px">
+      <div class="section-title">My Zama Projects</div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <h3 class="small">Lockbox FHE Demo</h3>
+          <p class="small muted">Toy demo that explains computing on locked data.</p>
+          <div class="projects meta" style="margin-top:8px"><a href="https://github.com/Ankush376/Lockbox-fhe-demo" target="_blank">View on GitHub</a></div>
+        </div>
+        <div class="card">
+          <h3 class="small">Zama Q&A Hub</h3>
+          <p class="small muted">Searchable FAQ for FHE beginners</p>
+          <div class="projects meta" style="margin-top:8px"><a href="https://github.com/Ankush376/Zama-QA-Web" target="_blank">View on GitHub</a></div>
+        </div>
+        <div class="card">
+          <h3 class="small">Learning Dashboard</h3>
+          <p class="small muted">Resources, links and guides for new learners</p>
+          <div class="projects meta" style="margin-top:8px"><a href="https://ankush376.github.io/Zama-Learning-Dashboard/" target="_blank">Live Demo</a></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section">
-    <h2>🧠 Interactive Zone (Coming Soon)</h2>
-    <div class="card" style="text-align:center;">
-      <p>Next update will include a small Zama Quiz & Encryption Visualizer 🔥</p>
-    </div>
-  </section>
+    <section id="team" style="margin-top:26px">
+      <div class="section-title">Zama Team & Friends</div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card member"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;color:#0b4db7;font-weight:700">RH</div><div><div style="font-weight:700">Rand Hindi</div><div class="small"><a href="https://x.com/randhindi" target="_blank">@randhindi</a></div></div></div></div>
+        <div class="card member"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;color:#0b4db7;font-weight:700">PV</div><div><div style="font-weight:700">Paolo</div><div class="small"><a href="https://x.com/paolo" target="_blank">@paolo</a></div></div></div></div>
+        <div class="card member"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;color:#0b4db7;font-weight:700">ZA</div><div><div style="font-weight:700">Zama AI</div><div class="small"><a href="https://x.com/zama_ai" target="_blank">@zama_ai</a></div></div></div></div>
+      </div>
+      <div class="note">If you are on the Zama team and want a direct link or role added, ping me on X.</div>
+    </section>
 
-  <section class="section">
-    <h2>👤 About Me</h2>
-    <div class="card">
-      <p>I'm Ankush — crypto enthusiast, airdrop hunter, and Zama Creator Program builder from India 🇮🇳</p>
-      <p>Follow me on X: <a href="https://x.com/Ankushk63616898" target="_blank">@Ankushk63616898</a></p>
-    </div>
-  </section>
+  </main>
 
-  <footer>
-    Made with ❤️ by <a href="https://x.com/Ankushk63616898" target="_blank">@Ankushk63616898</a> | #ZamaCreatorProgram
-  </footer>
+  <div class="footer">
+    <div class="small">Built with curiosity by <a href="https://x.com/Ankushk63616898" target="_blank">@Ankushk63616898</a> — Zama Creator Program</div>
+  </div>
+</div>
+
+<!-- QUIZ PANEL & LEADERBOARD -->
+<div id="quizPanel" class="quiz-panel" style="display:none">
+  <div class="quiz-header">
+    <div style="font-weight:700;color:#0b4db7">Zama Quiz</div>
+    <div class="small">25 questions · public leaderboard</div>
+  </div>
+  <div class="quiz-body" id="quizBody"></div>
+  <div class="quiz-footer" id="quizFooter"></div>
+</div>
+
+<div id="lbPanel" class="lb-panel" style="display:none">
+  <div class="quiz-header">
+    <div style="font-weight:700;color:#0b4db7">Leaderboard</div>
+    <div class="small">Public leaderboard (live)</div>
+  </div>
+  <div class="lb-body" id="lbBody"></div>
+  <div style="padding:12px;border-top:1px solid rgba(2,6,23,0.03);display:flex;justify-content:flex-end">
+    <button class="btn-ghost" onclick="closeLB()">Close</button>
+  </div>
+</div>
+
+<script>
+/* ========== CONFIG ========== */
+/* Replace with your deployed Google Apps Script web app URL (see instructions below).
+   Example: https://script.google.com/macros/s/AKfycbx.../exec
+*/
+const SHEET_API_URL = 'REPLACE_WITH_YOUR_WEBAPP_URL'; // <-- change this after you deploy GAS
+
+/* ========== QUIZ DATA (25 Qs) ========== */
+const quizQuestions = [
+  {q:"What does FHE stand for?", opts:["Fully Homomorphic Encryption","Fast Homomorphic Encryption","Functional Homomorphic Engine","Fully Hidden Encryption"], a:0},
+  {q:"Why is FHE useful?", opts:["Compute on encrypted data","Make data public","Replace passwords","Faster downloads"], a:0},
+  {q:"Which company builds Concrete library?", opts:["Zama","OpenAI","IBM","Google"], a:0},
+  {q:"TFHE is best known for:", opts:["Encrypted boolean & arithmetic ops","Rendering images","Hosting websites","Database backups"], a:0},
+  {q:"Which language is commonly used by Zama projects?", opts:["Rust","PHP","Perl","VB"], a:0},
+  {q:"Which sector benefits from FHE?", opts:["Healthcare","Movie production","Gardening","Fast food"], a:0},
+  {q:"Additive homomorphism allows:", opts:["Add ciphertexts to get sum of plaintexts","Encrypt faster","Remove keys","Change formats"], a:0},
+  {q:"FHE differs from normal encryption because:", opts:["You can compute on ciphertexts","Encryption uses color","It needs special printers","It stores passwords"], a:0},
+  {q:"Zama's projects are:", opts:["Open-source","Paid-only","Secret","Illegal"], a:0},
+  {q:"A common FHE challenge is:", opts:["Performance and speed","File size only","Color choices","Design templates"], a:0},
+  {q:"What is a good first step to try Zama demos?", opts:["Open a Colab notebook on Zama GitHub","Buy hardware","Install a plugin","Pay a subscription"], a:0},
+  {q:"Which of these is an FHE use-case?", opts:["Private ML inference","Faster downloads","Screen recording","Video editing"], a:0},
+  {q:"Leaderboards in this site use:", opts:["Google Sheets backend (public)","Local browser only","Blockchain only","FTP server"], a:0},
+  {q:"What does TFHE-rs refer to?", opts:["Rust bindings for TFHE","A cloud service","A mobile app","A database"], a:0},
+  {q:"Why keep data encrypted during computation?", opts:["Protect privacy","To slow systems","Because it's trendy","To avoid colors"], a:0},
+  {q:"Which tool helps compile models to FHE?", opts:["Concrete","Photoshop","Notepad","Excel"], a:0},
+  {q:"FHE makes it easier to:", opts:["Run ML on private user data","Make games","Edit videos","Host streaming"], a:0},
+  {q:"Before trusting a crypto airdrop claim, you should:", opts:["Verify official channels and never share private keys","Share your seed phrase","Click every link","Trust strangers"], a:0},
+  {q:"Which is true about Zama?", opts:["They build tools to make FHE practical","They sell music","They only host videos","They make phones"], a:0},
+  {q:"A quick way to demo FHE is to:", opts:["Run a toy Colab demo or sample notebook","Buy new hardware","Change browser","Use FTP"], a:0},
+  {q:"Which language is popular for demos and scripts?", opts:["Python","COBOL","Fortran","Assembly"], a:0},
+  {q:"What does a public leaderboard require?", opts:["A backend to store scores (e.g. Google Sheets)","Nothing","Just localStorage","Only images"], a:0},
+  {q:"What is Zama Creator Program for?", opts:["Encouraging builders to create educational resources","Selling products","Running ads","Recruiting only"], a:0},
+  {q:"What should you avoid sharing online?", opts:["Private keys or seed phrases","Repo links","Docs","Blog posts"], a:0},
+  {q:"How many questions are in this quiz?", opts:["25","5","100","10"], a:0}
+];
+
+/* ========== UI & Logic ========== */
+const startBtn = document.getElementById('startBtn');
+const openLBBtn = document.getElementById('openLB');
+const quizPanel = document.getElementById('quizPanel');
+const quizBody = document.getElementById('quizBody');
+const quizFooter = document.getElementById('quizFooter');
+const lbPanel = document.getElementById('lbPanel');
+const lbBody = document.getElementById('lbBody');
+
+let state = {idx:0,score:0,running:false};
+
+function startQuiz(){
+  state.idx=0; state.score=0; state.running=true;
+  quizPanel.style.display='block';
+  renderQuestion();
+}
+function closeQuiz(){ quizPanel.style.display='none'; state.running=false; }
+function renderQuestion(){
+  const q = quizQuestions[state.idx];
+  quizBody.innerHTML = '';
+  const qEl = document.createElement('div'); qEl.className='q-text'; qEl.innerText = `Q${state.idx+1}. ${q.q}`;
+  quizBody.appendChild(qEl);
+  const opts = document.createElement('div'); opts.className='options';
+  q.opts.forEach((o,i)=>{
+    const d = document.createElement('div'); d.className='opt'; d.innerText=o;
+    d.onclick = ()=>choose(i);
+    opts.appendChild(d);
+  });
+  quizBody.appendChild(opts);
+  // progress bar
+  const prog = document.createElement('div'); prog.className='progress';
+  const span = document.createElement('span'); span.style.width = `${(state.idx/quizQuestions.length)*100}%`;
+  prog.appendChild(span); quizBody.appendChild(prog);
+  renderFooter();
+}
+function renderFooter(){
+  quizFooter.innerHTML='';
+  if(state.idx < quizQuestions.length){
+    const left = document.createElement('div'); left.className='small'; left.innerText = `Question ${state.idx+1} of ${quizQuestions.length}`;
+    const right = document.createElement('div');
+    const quit = document.createElement('button'); quit.className='btn-ghost'; quit.innerText='Quit'; quit.onclick=()=>{ if(confirm('Quit quiz?')) closeQuiz(); };
+    right.appendChild(quit);
+    quizFooter.appendChild(left); quizFooter.appendChild(right);
+  } else {
+    // show results
+    quizBody.innerHTML = `<div style="text-align:center"><div class="score-large">You scored ${state.score} / ${quizQuestions.length}</div><div class="small" style="margin-top:8px">Enter name to save to leaderboard</div></div>`;
+    quizFooter.innerHTML='';
+    const name = document.createElement('input'); name.placeholder='Your name'; name.className='input-inline';
+    const save = document.createElement('button'); save.className='quiz-btn'; save.innerText='Save Score';
+    save.onclick = ()=>{ const n = (name.value||'Anonymous').trim(); submitScoreToBackend(n,state.score); };
+    quizFooter.appendChild(name); quizFooter.appendChild(save);
+  }
+}
+function choose(i){
+  if(!state.running) return;
+  const q = quizQuestions[state.idx];
+  if(i===q.a) state.score++;
+  state.idx++;
+  if(state.idx < quizQuestions.length) renderQuestion();
+  else renderFooter();
+}
+
+/* Leaderboard functions: uses Google Apps Script webapp if configured */
+async function submitScoreToBackend(name,score){
+  if(!SHEET_API_URL || SHEET_API_URL.includes('REPLACE_WITH')){ // fallback local
+    saveLocalScore(name,score);
+    alert('Score saved locally (no public leaderboard configured). Open leaderboard to view.');
+    closeQuiz(); openLB();
+    return;
+  }
+  try{
+    // do POST
+    const res = await fetch(SHEET_API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'add',name,score})
+    });
+    const j = await res.json();
+    if(j && j.status==='ok'){ closeQuiz(); openLB(); }
+    else { alert('Could not save score. Saving locally instead.'); saveLocalScore(name,score); closeQuiz(); openLB(); }
+  } catch(e){
+    console.error(e); alert('Network error. Score saved locally.'); saveLocalScore(name,score); closeQuiz(); openLB();
+  }
+}
+function saveLocalScore(name,score){ const key='zama_quiz_local_v1'; const raw = localStorage.getItem(key); let arr = raw?JSON.parse(raw):[]; arr.push({name,score,date:new Date().toISOString()}); arr.sort((a,b)=>b.score-a.score); if(arr.length>50) arr=arr.slice(0,50); localStorage.setItem(key,JSON.stringify(arr)); }
+
+async function openLB(){
+  lbPanel.style.display='block';
+  lbBody.innerHTML = '<div class="small">Loading leaderboard...</div>';
+  // first try public backend
+  if(SHEET_API_URL && !SHEET_API_URL.includes('REPLACE_WITH')){
+    try{
+      const res = await fetch(SHEET_API_URL+'?action=list');
+      const j = await res.json();
+      if(j && Array.isArray(j.data)){
+        renderLeaderboard(j.data);
+        return;
+      }
+    }catch(e){ console.warn('backend fail',e); }
+  }
+  // fallback to local
+  const raw = localStorage.getItem('zama_quiz_local_v1');
+  const arr = raw?JSON.parse(raw):[];
+  renderLeaderboard(arr.slice(0,10));
+}
+function closeLB(){ lbPanel.style.display='none'; }
+function renderLeaderboard(arr){
+  if(!arr || arr.length===0){ lbBody.innerHTML = '<div class="small">No scores yet. Be the first!</div>'; return; }
+  // ensure sorted desc
+  arr.sort((a,b)=>b.score - a.score || new Date(a.date) - new Date(b.date));
+  const top = arr.slice(0,10);
+  lbBody.innerHTML = '';
+  top.forEach((it,idx)=>{
+    const el = document.createElement('div'); el.className='lb-item';
+    el.innerHTML = `<div style="font-weight:600">#${idx+1} ${escapeHTML(it.name||'Anon')}</div><div class="small">${it.score}</div>`;
+    lbBody.appendChild(el);
+  });
+}
+
+/* helpers */
+function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
+
+document.getElementById('startBtn').addEventListener('click', startQuiz);
+document.getElementById('openLB').addEventListener('click', openLB);
+
+/* keyboard close */
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeQuiz(); closeLB(); }});
+</script>
 </body>
 </html>
