@@ -7,46 +7,125 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7fafc; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --glass:rgba(37,99,235,0.06);
-  --shadow: 0 8px 24px rgba(16,24,40,0.06);
+  --bg:#000000;
+  --card:#111111;
+  --muted:#aaaaaa;
+  --accent:#ffd000;
+  --glass:rgba(255,208,0,0.1);
+  --shadow:0 8px 24px rgba(255,208,0,0.3);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#0f172a;background:linear-gradient(180deg,#f8fafc,#eef2ff);}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:#f9f9f9;
+  background:var(--bg);
+}
 .container{max-width:1100px;margin:28px auto;padding:20px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);box-shadow:var(--shadow);border:1px solid rgba(2,6,23,0.04)}
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:18px;border-radius:12px;
+  background:#0a0a0a;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,0.08)
+}
 .brand{display:flex;align-items:center;gap:12px}
-.logo{width:54px;height:54px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-weight:700;color:#072f6b}
+.logo{
+  width:54px;height:54px;border-radius:10px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#000;
+}
 h1{font-size:18px;margin:0;color:var(--accent)}
 .header .muted{color:var(--muted);font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
 @media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);padding:16px;border-radius:12px;border:1px solid rgba(2,6,23,0.04);box-shadow:0 6px 18px rgba(16,24,40,0.04);transition:transform .22s}
-.card:hover{transform:translateY(-6px)}
+.card{
+  background:var(--card);
+  padding:16px;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 6px 18px rgba(255,208,0,0.15);
+  transition:transform .22s, box-shadow .22s;
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 10px 28px rgba(255,208,0,0.3);
+}
 .section-title{color:var(--accent);margin:0 0 10px 0;font-weight:600}
 .small{font-size:13px;color:var(--muted)}
-.links a{display:block;color:#0b4db7;text-decoration:none;margin:6px 0}
-.watermark{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.06;font-weight:800;font-size:24vw;color:#2563eb;transform:rotate(-12deg);z-index:0}
+.links a{display:block;color:var(--accent);text-decoration:none;margin:6px 0}
+.links a:hover{text-decoration:underline}
+.watermark{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:0.06;
+  font-weight:800;font-size:24vw;
+  color:var(--accent);
+  transform:rotate(-12deg);z-index:0
+}
 .quiz-actions{display:flex;gap:10px;flex-wrap:wrap}
-.quiz-btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.14)}
-.btn-ghost{background:transparent;border:1px solid rgba(2,6,23,0.06);padding:9px 12px;border-radius:10px;cursor:pointer;color:var(--muted)}
+.quiz-btn{
+  background:var(--accent);color:#000;border:0;
+  padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;
+  box-shadow:0 8px 20px rgba(255,208,0,0.25);
+}
+.quiz-btn:hover{background:#ffdc32}
+.btn-ghost{
+  background:transparent;border:1px solid rgba(255,255,255,0.2);
+  padding:9px 12px;border-radius:10px;cursor:pointer;color:var(--muted);
+}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
 /* quiz panel */
-.quiz-panel{position:fixed;right:18px;bottom:18px;width:420px;max-width:94vw;border-radius:12px;background:#fff;border:1px solid rgba(2,6,23,0.04);box-shadow:0 20px 60px rgba(16,24,40,0.12);z-index:40;overflow:hidden}
-.quiz-header{padding:12px 14px;border-bottom:1px solid rgba(2,6,23,0.03);display:flex;justify-content:space-between;align-items:center}
+.quiz-panel{
+  position:fixed;right:18px;bottom:18px;width:420px;max-width:94vw;
+  border-radius:12px;background:#0a0a0a;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 60px rgba(255,208,0,0.25);
+  z-index:40;overflow:hidden;color:#fff;
+}
+.quiz-header{
+  padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex;justify-content:space-between;align-items:center
+}
 .quiz-body{padding:14px;max-height:520px;overflow:auto}
-.q-text{font-weight:700;margin:0 0 8px 0;color:#0f172a}
-.opt{padding:10px;border-radius:10px;border:1px solid rgba(2,6,23,0.04);margin-bottom:8px;cursor:pointer;background:#fbfdff}
-.opt:hover{border-color:var(--accent);transform:translateY(-3px)}
-.progress{height:8px;background:#eef2ff;border-radius:99px;overflow:hidden;margin-top:10px}
-.progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7cc1ff);width:0%}
-.quiz-footer{padding:12px 14px;border-top:1px solid rgba(2,6,23,0.03);display:flex;justify-content:space-between;align-items:center}
+.q-text{font-weight:700;margin:0 0 8px 0;color:var(--accent)}
+.opt{
+  padding:10px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  margin-bottom:8px;cursor:pointer;background:#111;
+  transition:all .2s;
+}
+.opt:hover{border-color:var(--accent);background:#1a1a1a;transform:translateY(-3px)}
+.progress{height:8px;background:#222;border-radius:99px;overflow:hidden;margin-top:10px}
+.progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#fff700);width:0%}
+.quiz-footer{
+  padding:12px 14px;border-top:1px solid rgba(255,255,255,0.05);
+  display:flex;justify-content:space-between;align-items:center
+}
 .score-large{font-size:20px;color:var(--accent);font-weight:700}
+
 /* leaderboard panel */
-.lb-panel{position:fixed;left:18px;bottom:18px;width:360px;max-width:92vw;border-radius:12px;background:#fff;border:1px solid rgba(2,6,23,0.04);box-shadow:0 20px 60px rgba(16,24,40,0.12);z-index:40;overflow:hidden}
+.lb-panel{
+  position:fixed;left:18px;bottom:18px;width:360px;max-width:92vw;
+  border-radius:12px;background:#0a0a0a;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 60px rgba(255,208,0,0.25);
+  z-index:40;overflow:hidden;color:#fff;
+}
 .lb-body{padding:12px;max-height:520px;overflow:auto}
-.lb-item{display:flex;justify-content:space-between;padding:8px;border-radius:10px;border:1px solid rgba(2,6,23,0.03);margin-bottom:8px;background:#fbfdff}
+.lb-item{
+  display:flex;justify-content:space-between;
+  padding:8px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  margin-bottom:8px;background:#111;
+}
 .footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding:18px}
-.input-inline{padding:8px;border-radius:8px;border:1px solid rgba(2,6,23,0.06);width:150px}
+.input-inline{
+  padding:8px;border-radius:8px;
+  border:1px solid rgba(255,255,255,0.2);background:#111;color:#fff;
+  width:150px
+}
 .note{font-size:12px;color:var(--muted);margin-top:8px}
 </style>
 </head>
@@ -73,7 +152,7 @@ h1{font-size:18px;margin:0;color:var(--accent)}
   </div>
 
   <main style="position:relative;z-index:2">
-    <section id="learn" style="margin-top:18px">
+     <section id="learn" style="margin-top:18px">
       <div class="section-title">Learn FHE</div>
       <div class="grid" style="margin-top:12px">
         <div class="card">
@@ -143,11 +222,10 @@ h1{font-size:18px;margin:0;color:var(--accent)}
       </div>
       <div class="note">If you are on the Zama team and want a direct link or role added, ping me on X.</div>
     </section>
-
   </main>
 
   <div class="footer">
-    <div class="small">Built with curiosity by <a href="https://x.com/Ankushk63616898" target="_blank">@Ankushk63616898</a> — Zama Creator Program</div>
+    <div class="small">Built with curiosity by <a href="https://x.com/Ankushk63616898" target="_blank" style="color:var(--accent)">@Ankushk63616898</a> — Zama Creator Program</div>
   </div>
 </div>
 
@@ -335,6 +413,7 @@ document.getElementById('openLB').addEventListener('click', openLB);
 
 /* keyboard close */
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeQuiz(); closeLB(); }});
+
 </script>
 </body>
 </html>
